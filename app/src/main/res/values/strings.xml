@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Salat Notifier</string>
+
+    <string name="permission_title">Need Permission</string>
+    <string name="permission_text">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="goto_settings">GOTO SETTINGS</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="enable_location_msg">Your Location is turned off, Please Enable your location to get the current location.</string>
+    <string name="location_positive">Location Settings</string>
+    <string name="location_negative">Cancel</string>
+    <string name="finding">Finding Mosques Near You&#8230;</string>
 </resources>
