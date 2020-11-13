@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.hassanjamil.hqibla.CompassActivity;
+import com.hassanjamil.hqibla.Constants;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -54,6 +56,27 @@ public class MainActivity extends AppCompatActivity {
                 StartMosquesActivity();
             }
         });
+
+        binding.qiblaDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQiblaDirectionActivity();
+            }
+        });
+    }
+
+    private void startQiblaDirectionActivity() {
+        Intent intent = new Intent(MainActivity.this, CompassActivity.class);
+        intent.putExtra(Constants.TOOLBAR_TITLE, "Qibla Direction");		// Toolbar Title
+        intent.putExtra(Constants.TOOLBAR_BG_COLOR, "#DC3C46");		// Toolbar Background color
+        intent.putExtra(Constants.TOOLBAR_TITLE_COLOR, "#FFFFFF");	// Toolbar Title color
+        intent.putExtra(Constants.COMPASS_BG_COLOR, "#DC3C46");		// Compass background color
+        intent.putExtra(Constants.ANGLE_TEXT_COLOR, "#FFFFFF");		// Angle Text color
+        intent.putExtra(Constants.DRAWABLE_DIAL, R.drawable.dial);	// Your dial drawable resource
+        intent.putExtra(Constants.DRAWABLE_QIBLA, R.drawable.qibla); 	// Your qibla indicator drawable resource
+        intent.putExtra(Constants.FOOTER_IMAGE_VISIBLE, View.VISIBLE);	// Footer World Image visibility
+        intent.putExtra(Constants.LOCATION_TEXT_VISIBLE, View.VISIBLE); // Location Text visibility
+        startActivity(intent);
     }
 
     private void StartMosquesActivity() {
