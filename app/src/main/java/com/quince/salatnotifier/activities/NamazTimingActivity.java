@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.quince.salatnotifier.R;
 
-public class QiblaDirectionActivity extends AppCompatActivity {
+public class NamazTimingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qibla_direction);
+        setContentView(R.layout.activity_namaz_timing);
     }
 }

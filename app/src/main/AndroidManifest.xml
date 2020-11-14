@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.QiblaDirectionActivity"></activity>
+        <activity android:name=".activities.NamazTimingActivity"></activity>
         <activity android:name=".activities.Mosques" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -19,16 +19,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-
         <activity
             android:name="com.hassanjamil.hqibla.CompassActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

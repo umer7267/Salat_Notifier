@@ -13,10 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -31,21 +28,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.quince.salatnotifier.R;
 import com.quince.salatnotifier.databinding.ActivityMosquesBinding;
-import com.quince.salatnotifier.utility.Constants;
+import com.quince.salatnotifier.utility.ConstantsUtilities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Mosques extends AppCompatActivity implements com.google.android.gms.location.LocationListener,
@@ -150,7 +140,7 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
         lat = location.getLatitude();
         lng = location.getLongitude();
 
-        getAllMosques();
+        //getAllMosques();
 
         Log.d(TAG, "onLocationChanged: " + lat + ", " + lng);
     }
@@ -210,7 +200,7 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
         progressDialog.setMessage(getResources().getString(R.string.finding));
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.BASE_NEARBY_API, response -> {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantsUtilities.BASE_NEARBY_API, response -> {
             progressDialog.dismiss();
             try {
                 JSONObject jsonObject = new JSONObject(response);
@@ -228,9 +218,9 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
             protected Map<String, String> getParams() {
                 Map<String, String> map = new HashMap<>();
                 map.put("location", lat + ", " + lng);
-                map.put("radius", Constants.RADIUS+"");
-                map.put("type", Constants.TYPE);
-                map.put("key", Constants.API_KEY);
+                map.put("radius", ConstantsUtilities.RADIUS+"");
+                map.put("type", ConstantsUtilities.TYPE);
+                map.put("key", ConstantsUtilities.API_KEY);
                 return map;
             }
         };
