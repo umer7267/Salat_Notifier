@@ -19,23 +19,25 @@
             android:layout_height="wrap_content"
             android:background="#fff5f5f5">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/bg_circle"
-                android:gravity="center"
-                android:padding="1dp">
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="25dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:background="@drawable/bg_circle"-->
+<!--                android:gravity="center"-->
+<!--                android:padding="2dp"-->
+<!--                android:minWidth="25dp">-->
 
                 <TextView
                     android:id="@+id/ayat_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"/>
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
         </RelativeLayout>
 
