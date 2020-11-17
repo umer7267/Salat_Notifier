@@ -54,7 +54,6 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
     private long FASTEST_INTERVAL = 5000000;
 
     Double lat, lng;
-    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +65,6 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
         Log.d(TAG, "onCreate: ");
 
         checkLocation();
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)

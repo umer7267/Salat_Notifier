@@ -7,4 +7,7 @@ public class ConstantsUtilities {
     public static final String TYPE = "mosque";
 
     public static final String NAMAZ_TIMING = "http://api.aladhan.com/v1/timingsByAddress";
+
+    public static final String SURAH_LIST_BASE = "http://api.alquran.cloud/v1/surah";
+    public static final String SURAH_WITH_TRANSLATION = "/editions/quran-simple,ur.jalandhry";
 }

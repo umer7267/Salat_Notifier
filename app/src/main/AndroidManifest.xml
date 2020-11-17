@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.NamazTimingActivity"></activity>
+        <activity android:name=".activities.ReciteSurahActivity"></activity>
+        <activity android:name=".activities.SurahListActivity" />
+        <activity android:name=".activities.NamazTimingActivity" />
         <activity android:name=".activities.Mosques" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -24,9 +26,16 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
 
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

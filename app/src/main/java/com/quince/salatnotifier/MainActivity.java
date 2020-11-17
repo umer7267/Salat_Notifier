@@ -4,9 +4,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,8 +33,10 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.quince.salatnotifier.activities.Mosques;
+import com.quince.salatnotifier.activities.SurahListActivity;
 import com.quince.salatnotifier.databinding.ActivityMainBinding;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
+import com.quince.salatnotifier.utility.GetLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +54,7 @@ import static android.view.View.INVISIBLE;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Context context = MainActivity.this;
+    private Activity activity = this;
 
     ActivityMainBinding binding;
 
@@ -56,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
-    GPSTracker gps;
+    GetLocation locationTracker;
     Double lat, lng;
 
     public static String Fajr, Dhuhr, Asr, Maghrib, Isha;
@@ -87,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
                 startQiblaDirectionActivity();
             }
         });
+
+        binding.quran.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSurahListActivity();
+            }
+        });
+    }
+
+    private void startSurahListActivity() {
+        Intent intent = new Intent(context, SurahListActivity.class);
+        startActivity(intent);
     }
 
     private void getTodaysNamazTimings() {
@@ -268,7 +287,10 @@ public class MainActivity extends AppCompatActivity {
 
                             // check if all permissions are granted
                             if (report.areAllPermissionsGranted()) {
-                                fetch_GPS();
+                                locationTracker = new GetLocation(context, activity);
+                                lat = locationTracker.getLat();
+                                lng = locationTracker.getLng();
+                                getTodaysNamazTimings();
                             }
 
                             // check for permanent denial of any permission
@@ -312,36 +334,5 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivityForResult(intent, 101);
-    }
-
-    public void fetch_GPS() {
-
-        gps = new GPSTracker(this);
-
-        if(gps.getLocation() != null){
-            lat = gps.getLocation().getLatitude();
-            lng = gps.getLocation().getLongitude();
-
-            Log.d(TAG, "fetch_GPS: " + lat + ", " + lng);
-
-            getTodaysNamazTimings();
-
-        } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-
-            // qiblatIndicator.isShown(false);
-//            qiblatIndicator.setVisibility(INVISIBLE);
-//            qiblatIndicator.setVisibility(View.GONE);
-//            tvAngle.setText(getResources().getString(R.string.pls_enable_location));
-//            tvYourLocation.setText(getResources().getString(R.string.pls_enable_location));
-            /*if (item != null) {
-                item.setIcon(ContextCompat.getDrawable(getApplicationContext(), R.drawable.gps_off));
-
-            }*/
-            // Toast.makeText(getApplicationContext(), "Please enable Location first and Restart Application", Toast.LENGTH_LONG).show();
-        }
     }
 }
