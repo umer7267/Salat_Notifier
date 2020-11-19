@@ -2,14 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quince.salatnotifier">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
+        android:name=".notifications.CreateNotificationChannel"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ReciteSurahActivity"></activity>
+        <activity android:name=".activities.ReciteSurahActivity"/>
         <activity android:name=".activities.SurahListActivity" />
         <activity android:name=".activities.NamazTimingActivity" />
         <activity android:name=".activities.Mosques" />
@@ -25,17 +40,8 @@
             android:name="com.hassanjamil.hqibla.CompassActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+        <service android:name=".notifications.NotificationSchedular"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
-    <uses-feature
-        android:name="android.hardware.location"
-        android:required="true" />
-
-    <uses-feature
-        android:name="android.hardware.location.gps"
-        android:required="false" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>
