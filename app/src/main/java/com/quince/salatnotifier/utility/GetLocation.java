@@ -17,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.quince.salatnotifier.MainActivity;
 import com.quince.salatnotifier.R;
 
 import androidx.annotation.NonNull;
@@ -54,17 +55,17 @@ public class GetLocation implements com.google.android.gms.location.LocationList
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        mGoogleApiClient.connect();
     }
 
-    private boolean checkLocation() {
+    private void checkLocation() {
 
         Log.d(TAG, "checkLocation: " + isLocationEnabled());
 
         if (!isLocationEnabled()) {
             showAlert();
         }
-
-        return isLocationEnabled();
     }
 
     private boolean isLocationEnabled() {
@@ -89,7 +90,7 @@ public class GetLocation implements com.google.android.gms.location.LocationList
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "onConnected: ");
+        Log.d(TAG, "onConnected: " + mGoogleApiClient.isConnected());
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -103,6 +104,7 @@ public class GetLocation implements com.google.android.gms.location.LocationList
         if (mLocation != null) {
             startLocationUpdates();
         } else {
+            Log.d(TAG, "onConnected: Location not detected");
             Toast.makeText(context, "Location not Detected, Please turn on Your Location", Toast.LENGTH_SHORT).show();
         }
     }
@@ -128,7 +130,7 @@ public class GetLocation implements com.google.android.gms.location.LocationList
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d(TAG, "onConnectionSuspended: " + i);
     }
 
     @Override
@@ -141,9 +143,12 @@ public class GetLocation implements com.google.android.gms.location.LocationList
         lat = location.getLatitude();
         lng = location.getLongitude();
 
-        //getAllMosques();
-
         Log.d(TAG, "onLocationChanged: " + lat + ", " + lng);
+
+        if (activity instanceof MainActivity) {
+            MainActivity activity1 = (MainActivity) activity;
+            activity1.getTodaysNamazTimings(lat, lng);
+        }
     }
 
     public Double getLat() {

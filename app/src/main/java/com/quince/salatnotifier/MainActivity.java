@@ -5,9 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,14 +40,17 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.quince.salatnotifier.activities.Mosques;
+import com.quince.salatnotifier.activities.NamazTimingActivity;
 import com.quince.salatnotifier.activities.SurahListActivity;
 import com.quince.salatnotifier.databinding.ActivityMainBinding;
+import com.quince.salatnotifier.notifications.NotificationSchedular;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
 import com.quince.salatnotifier.utility.GetLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -79,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
 
+
         getLocationPermission();
 
         binding.mosquesNearMe.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +112,28 @@ public class MainActivity extends AppCompatActivity {
                 startSurahListActivity();
             }
         });
+
+        binding.namazLayout.setOnClickListener(view1 -> {
+            startNamazTimingsActivity();
+        });
+    }
+
+    private void startNamazTimingsActivity() {
+        Intent intent = new Intent(context, NamazTimingActivity.class);
+        intent.putExtra("city", getCityName(lat, lng));
+        startActivity(intent);
+    }
+
+    private String getCityName(Double lat, Double lng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(lat, lng, 1);
+            return addresses.get(0).getLocality();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void startSurahListActivity() {
@@ -108,7 +141,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void getTodaysNamazTimings() {
+    public void getTodaysNamazTimings(Double lat, Double lng) {
+
+        this.lat = lat;
+        this.lng = lng;
 
         String URL = ConstantsUtilities.NAMAZ_TIMING + "?address=" + lat + ", " + lng;
 
@@ -167,10 +203,35 @@ public class MainActivity extends AppCompatActivity {
 
             //Namaz Timings -----End------
 
+            //Set Notifications
+            //setJobSchedular(1, getNamazTimeinMillis(Fajr));
+            //setJobSchedular(2, getNamazTimeinMillis(Dhuhr));
+            setJobSchedular(3, getNamazTimeinMillis(Asr));
+            //setJobSchedular(4, getNamazTimeinMillis(Maghrib));
+            //setJobSchedular(5, getNamazTimeinMillis(Isha));
+
         } catch (JSONException e){
             Log.d(TAG, "UpdateUI: " + e.getMessage());
         }
 
+    }
+
+    private void setJobSchedular(int id, Long namazTimeinMillis) {
+
+        Log.d(TAG, "setJobSchedular: namaz time: " + namazTimeinMillis);
+
+        Long current = System.currentTimeMillis();
+
+        Log.d(TAG, "setJobSchedular: current time: " + current);
+
+        Long remaining = namazTimeinMillis - current;
+
+        Intent intent = new Intent(context, NotificationSchedular.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, current+1000, pendingIntent);
     }
 
     private String getCurrentNamaz() {
@@ -288,9 +349,6 @@ public class MainActivity extends AppCompatActivity {
                             // check if all permissions are granted
                             if (report.areAllPermissionsGranted()) {
                                 locationTracker = new GetLocation(context, activity);
-                                lat = locationTracker.getLat();
-                                lng = locationTracker.getLng();
-                                getTodaysNamazTimings();
                             }
 
                             // check for permanent denial of any permission
