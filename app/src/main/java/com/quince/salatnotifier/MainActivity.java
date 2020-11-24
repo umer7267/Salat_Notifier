@@ -39,6 +39,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.quince.salatnotifier.activities.IslamicCalendarActivity;
 import com.quince.salatnotifier.activities.Mosques;
 import com.quince.salatnotifier.activities.NamazTimingActivity;
 import com.quince.salatnotifier.activities.SurahListActivity;
@@ -116,6 +117,18 @@ public class MainActivity extends AppCompatActivity {
         binding.namazLayout.setOnClickListener(view1 -> {
             startNamazTimingsActivity();
         });
+
+        binding.islamicCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startIslamicCaldenarActivity();
+            }
+        });
+    }
+
+    private void startIslamicCaldenarActivity() {
+        Intent intent = new Intent(context, IslamicCalendarActivity.class);
+        startActivity(intent);
     }
 
     private void startNamazTimingsActivity() {
