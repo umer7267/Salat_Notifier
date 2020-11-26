@@ -15,4 +15,8 @@ public class ConstantsUtilities {
 
     public static final String SURAH_LIST_BASE = "https://api.alquran.cloud/v1/surah";
     public static final String SURAH_WITH_TRANSLATION = "/editions/quran-simple,ur.jalandhry";
+
+    public static final String API_BASE_URL = "https://alquran.coderpakistan.tk/public/api/";
+    public static final String IMG_BASE_URL = "https://alquran.coderpakistan.tk/public/uploads/images/";
+    public static final String BOOK_BASE_URL = "https://alquran.coderpakistan.tk/public/uploads/books/";
 }

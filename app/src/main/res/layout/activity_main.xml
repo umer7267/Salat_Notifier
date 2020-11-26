@@ -271,6 +271,7 @@
                 app:cardUseCompatPadding="true">
 
                 <ImageView
+                    android:id="@+id/dua_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/splash_bg"
@@ -286,6 +287,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:layout_margin="20dp">
 
                     <TextView
@@ -314,16 +316,14 @@
                         android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textSize="16sp"
-                        android:layout_marginTop="5dp"
-                        android:maxLines="2"
-                        android:ellipsize="end"/>
+                        android:layout_marginTop="5dp"/>
 
                     <TextView
+                        android:id="@+id/urdu_dua"
                         android:text="اے پروردگار، ہم کو اپنا فرمانبردار بنائے رکھیو۔ اور ہماری اولاد میں سے بھی ایک گروہ کو اپنا مطیع بنائے رہیو، اور (پروردگار) ہمیں طریق عبادت بتا اور ہمارے حال پر (رحم کے ساتھ) توجہ فرما۔ بے شک تو توجہ فرمانے والا مہربان ہےُ"
                         android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textSize="16sp"
-                        android:id="@+id/urdu_dua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"/>

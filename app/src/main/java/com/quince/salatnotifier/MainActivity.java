@@ -47,6 +47,7 @@ import com.quince.salatnotifier.databinding.ActivityMainBinding;
 import com.quince.salatnotifier.notifications.NotificationSchedular;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
 import com.quince.salatnotifier.utility.GetLocation;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(view);
 
-
         getLocationPermission();
+        getDailyDua();
 
         binding.mosquesNearMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +125,37 @@ public class MainActivity extends AppCompatActivity {
                 startIslamicCaldenarActivity();
             }
         });
+    }
+
+    private void getDailyDua() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantsUtilities.API_BASE_URL + "dua", response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+
+                if (jsonObject.getBoolean("status")){
+
+                    JSONObject dua = jsonObject.getJSONObject("dua");
+
+                    binding.arabicDua.setText(dua.getString("dua"));
+                    binding.urduDua.setText(dua.getString("urdu"));
+                    binding.englishDua.setText(dua.getString("english"));
+
+                    Picasso.get()
+                            .load(ConstantsUtilities.IMG_BASE_URL + dua.getString("image"))
+                            .into(binding.duaImage);
+
+                } else {
+                    Toast.makeText(context, "Error! Fetching Daily Dua", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }, error -> {
+            Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void startIslamicCaldenarActivity() {
