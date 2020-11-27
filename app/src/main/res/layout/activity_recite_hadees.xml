@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvhadees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="5dp"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/hadees_no_layout"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_bg_row"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/hadees_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/hadees_no_layout"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hadees_ar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            tools:text="حَدَّثَنَا أَبُو الْوَلِيدِ ، حَدَّثَنَا شُعْبَةُ ، عَنْ الْأَشْعَثِ , قَالَ : سَمِعْتُ مُعَاوِيَةَ بْنَ سُوَيْدِ بْنِ مُقَرِّنٍ ، عَنْ الْبَرَاءِ رَضِيَ اللَّهُ عَنْهُ , قَالَ : أَمَرَنَا النَّبِيُّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ بِسَبْعٍ وَنَهَانَا عَنْ سَبْعٍ ، أَمَرَنَا : بِاتِّبَاعِ الْجَنَائِزِ , وَعِيَادَةِ الْمَرِيضِ , وَإِجَابَةِ الدَّاعِي , وَنَصْرِ الْمَظْلُومِ , وَإِبْرَارِ الْقَسَمِ , وَرَدِّ السَّلَامِ , وَتَشْمِيتِ الْعَاطِسِ ، وَنَهَانَا عَنْ : آنِيَةِ الْفِضَّةِ , وَخَاتَمِ الذَّهَبِ , وَالْحَرِيرِ , وَالدِّيبَاجِ , وَالْقَسِّيِّ , وَالْإِسْتَبْرَقِ."/>
+
+                        <TextView
+                            android:id="@+id/hadees_en"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            tools:text="Narrated Al-Bara' bin `Azib: Allah's Apostle ordered us to do seven things and forbade us to do other seven. He ordered us: to follow the funeral procession. to visit the sick, to accept invitations, to help the oppressed, to fulfill the oaths, to return the greeting and to reply to the sneezer: (saying, May Allah be merciful on you, provided the sneezer says, All the praises are for Allah, ). He forbade us to use silver utensils and dishes and to wear golden rings, silk (clothes), Dibaj (pure silk cloth), Qissi and Istabraq (two kinds of silk cloths)." />
+
+                        <TextView
+                            android:id="@+id/hadees_ur"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textSize="16sp"
+                            tools:text="ہم سے ابوالولید نے بیان کیا، کہا کہ ہم سے شعبہ نے بیان کیا، ان سے اشعث بن ابی الثعثاء نے، انہوں نے کہا کہ میں نے معاویہ بن سوید مقرن سے سنا، وہ براء بن عازب رضی اللہ عنہ سے نقل کرتے تھے کہ ہمیں نبی کریم صلی اللہ علیہ وسلم نے سات کاموں کا حکم دیا اور سات کاموں سے روکا۔ ہمیں آپ صلی اللہ علیہ وسلم نے حکم دیا تھا جنازہ کے ساتھ چلنے، مریض کی مزاج پرسی، دعوت قبول کرنے، مظلوم کی مدد کرنے کا، قسم پوری کرنے کا، سلام کا جواب دینے کا، چھینک پر «يرحمک الله» کہنے کا اور آپ صلی اللہ علیہ وسلم نے ہمیں منع کیا تھا چاندی کے برتن ( استعمال میں لانے ) سے، سونے کی انگوٹھی پہننے سے، ریشم اور دیباج ( کے کپڑوں کے پہننے ) سے، قسی سے، استبرق سے۔" />
+
+                        <TextView
+                            android:id="@+id/reference"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="Book: Sahih Bukhari, Chapter: Al-Janaiz (Funerals), Hadees No. 1239"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</ScrollView>

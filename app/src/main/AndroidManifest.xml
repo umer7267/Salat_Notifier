@@ -14,7 +14,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".activities.IslamicCalendarActivity"></activity>
+        <activity android:name=".activities.ReadBookActivity"></activity>
+        <activity android:name=".activities.BooksListActivity" />
+        <activity android:name=".activities.ReciteHadeesActivity" />
+        <activity android:name=".activities.AhadeesListActivity" />
+        <activity android:name=".activities.IslamicCalendarActivity" />
         <activity android:name=".activities.ReciteSurahActivity" />
         <activity android:name=".activities.SurahListActivity" />
         <activity android:name=".activities.NamazTimingActivity" />
@@ -40,14 +44,13 @@
             </intent-filter>
         </receiver>
     </application>
-
     <uses-feature
         android:name="android.hardware.location.gps"
         android:required="false" />
+
     <uses-feature
         android:name="android.hardware.location"
         android:required="true" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

@@ -39,6 +39,8 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.quince.salatnotifier.activities.AhadeesListActivity;
+import com.quince.salatnotifier.activities.BooksListActivity;
 import com.quince.salatnotifier.activities.IslamicCalendarActivity;
 import com.quince.salatnotifier.activities.Mosques;
 import com.quince.salatnotifier.activities.NamazTimingActivity;
@@ -47,6 +49,7 @@ import com.quince.salatnotifier.databinding.ActivityMainBinding;
 import com.quince.salatnotifier.notifications.NotificationSchedular;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
 import com.quince.salatnotifier.utility.GetLocation;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -125,6 +128,30 @@ public class MainActivity extends AppCompatActivity {
                 startIslamicCaldenarActivity();
             }
         });
+
+        binding.ahadees.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startAhadeesListActivity();
+            }
+        });
+
+        binding.islamicBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startBooksListActivity();
+            }
+        });
+    }
+
+    private void startBooksListActivity() {
+        Intent intent = new Intent(context, BooksListActivity.class);
+        startActivity(intent);
+    }
+
+    private void startAhadeesListActivity() {
+        Intent intent = new Intent(context, AhadeesListActivity.class);
+        startActivity(intent);
     }
 
     private void getDailyDua() {
