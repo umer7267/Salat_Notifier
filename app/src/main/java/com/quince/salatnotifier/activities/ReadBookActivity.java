@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.quince.salatnotifier.MainActivity;
 import com.quince.salatnotifier.R;
 import com.quince.salatnotifier.databinding.ActivityReadBookBinding;
@@ -17,6 +19,8 @@ import com.quince.salatnotifier.utility.DefaultLinkHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import com.github.barteksc.pdfviewer.PDFView;
 
 public class ReadBookActivity extends AppCompatActivity {
     private static final String TAG = "ReadBookActivity";
@@ -65,6 +69,7 @@ public class ReadBookActivity extends AppCompatActivity {
     }
 
     private void loadFromURI(InputStream input) {
+        Log.d(TAG, "loadFromURI: " + input);
         binding.pdfView.fromStream(input)
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)

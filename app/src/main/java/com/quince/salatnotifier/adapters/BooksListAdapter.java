@@ -44,8 +44,11 @@ public class BooksListAdapter extends RecyclerView.Adapter<BooksListAdapter.Book
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String URL = ConstantsUtilities.BOOK_BASE_URL + book.getBook();
+
                 Intent intent = new Intent(context, ReadBookActivity.class);
-                intent.putExtra("URI", ConstantsUtilities.BOOK_BASE_URL + holder.book_name);
+                intent.putExtra("URI", URL);
                 context.startActivity(intent);
             }
         });
