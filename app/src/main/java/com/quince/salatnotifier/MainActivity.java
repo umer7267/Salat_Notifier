@@ -44,6 +44,7 @@ import com.quince.salatnotifier.activities.BooksListActivity;
 import com.quince.salatnotifier.activities.IslamicCalendarActivity;
 import com.quince.salatnotifier.activities.Mosques;
 import com.quince.salatnotifier.activities.NamazTimingActivity;
+import com.quince.salatnotifier.activities.ProblemsListActivity;
 import com.quince.salatnotifier.activities.SurahListActivity;
 import com.quince.salatnotifier.databinding.ActivityMainBinding;
 import com.quince.salatnotifier.notifications.NotificationSchedular;
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         getLocationPermission();
         getDailyDua();
+        getDailyInspiration();
 
         binding.mosquesNearMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +144,45 @@ public class MainActivity extends AppCompatActivity {
                 startBooksListActivity();
             }
         });
+
+        binding.namazProblem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startNamazProblemActivity();
+            }
+        });
+    }
+
+    private void startNamazProblemActivity() {
+        Intent intent = new Intent(context, ProblemsListActivity.class);
+        startActivity(intent);
+    }
+
+    private void getDailyInspiration() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantsUtilities.API_BASE_URL + "inspiration", response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+
+                if (jsonObject.getBoolean("status")){
+
+                    JSONObject inspiration = jsonObject.getJSONObject("inspiration");
+
+                    Picasso.get()
+                            .load(ConstantsUtilities.IMG_BASE_URL + inspiration.getString("image"))
+                            .into(binding.ispirationImage);
+
+                } else {
+                    Toast.makeText(context, "Error! Fetching Daily Inspiration", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }, error -> {
+            Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void startBooksListActivity() {

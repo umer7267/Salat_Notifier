@@ -273,9 +273,10 @@
                 <ImageView
                     android:id="@+id/dua_image"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/splash_bg"
-                    android:scaleType="centerCrop"/>
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/splash_bg"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -302,7 +303,7 @@
                         android:id="@+id/arabic_dua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="رَبَّنَا وَاجْعَلْنَا مُسْلِمَيْنِ لَكَ وَمِن ذُرِّيَّتِنَا أُمَّةً مُّسْلِمَةً لَّكَ وَأَرِنَا مَنَاسِكَنَا وَتُبْ عَلَيْنَآ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ"
+                        tools:text="رَبَّنَا وَاجْعَلْنَا مُسْلِمَيْنِ لَكَ وَمِن ذُرِّيَّتِنَا أُمَّةً مُّسْلِمَةً لَّكَ وَأَرِنَا مَنَاسِكَنَا وَتُبْ عَلَيْنَآ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ"
                         android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textSize="16sp"
@@ -312,7 +313,7 @@
                         android:id="@+id/english_dua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Our Lord! Make of us Muslims, bowing to Thy (Will), and of our progeny a people Muslim, bowing to Thy (will); and show us our place for the celebration of (due) rites; and turn unto us (in Mercy); for Thou art the Oft-Returning, Most Merciful.ُ"
+                        tools:text="Our Lord! Make of us Muslims, bowing to Thy (Will), and of our progeny a people Muslim, bowing to Thy (will); and show us our place for the celebration of (due) rites; and turn unto us (in Mercy); for Thou art the Oft-Returning, Most Merciful.ُ"
                         android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textSize="16sp"
@@ -320,7 +321,7 @@
 
                     <TextView
                         android:id="@+id/urdu_dua"
-                        android:text="اے پروردگار، ہم کو اپنا فرمانبردار بنائے رکھیو۔ اور ہماری اولاد میں سے بھی ایک گروہ کو اپنا مطیع بنائے رہیو، اور (پروردگار) ہمیں طریق عبادت بتا اور ہمارے حال پر (رحم کے ساتھ) توجہ فرما۔ بے شک تو توجہ فرمانے والا مہربان ہےُ"
+                        tools:text="اے پروردگار، ہم کو اپنا فرمانبردار بنائے رکھیو۔ اور ہماری اولاد میں سے بھی ایک گروہ کو اپنا مطیع بنائے رہیو، اور (پروردگار) ہمیں طریق عبادت بتا اور ہمارے حال پر (رحم کے ساتھ) توجہ فرما۔ بے شک تو توجہ فرمانے والا مہربان ہےُ"
                         android:textColor="@color/white"
                         android:textAlignment="center"
                         android:textSize="16sp"
@@ -415,6 +416,73 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/namaz_problem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="5dp"
+                    android:elevation="8dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="4dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_prayer"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Namaz Problems"
+                            android:layout_marginTop="3dp"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true"
+                android:background="@drawable/splash_bg">
+
+                <ImageView
+                    android:id="@+id/ispiration_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:src="@drawable/bg_detail"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

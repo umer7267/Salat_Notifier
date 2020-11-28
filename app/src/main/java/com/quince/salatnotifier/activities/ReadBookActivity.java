@@ -10,14 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.quince.salatnotifier.MainActivity;
 import com.quince.salatnotifier.R;
 import com.quince.salatnotifier.databinding.ActivityReadBookBinding;
 import com.quince.salatnotifier.utility.DefaultLinkHandler;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -39,32 +42,36 @@ public class ReadBookActivity extends AppCompatActivity {
         Intent intent = getIntent();
         URI = intent.getStringExtra("URI");
 
+        Log.d(TAG, "onCreate: " + URI);
+
         new ConvertURL().execute();
     }
 
-    public class ConvertURL extends AsyncTask<Void, Void, Void> {
-
-        InputStream input;
+    public class ConvertURL extends AsyncTask<Void, Void, InputStream> {
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                input = new URL(URI).openStream();
-            } catch (IOException e) {
-                ReadBookActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
-                e.printStackTrace();
+        protected InputStream doInBackground(Void... voids) {
+            InputStream inputStream = null;
+            try
+            {
+                URL url = new URL(URI);
+                HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                if(urlConnection.getResponseCode() == 200)
+                {
+                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                }
             }
-            return null;
+            catch (IOException e)
+            {
+                return null;
+            }
+            return inputStream;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            loadFromURI(input);
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(InputStream inputStream) {
+            loadFromURI(inputStream);
+            super.onPostExecute(inputStream);
         }
     }
 
@@ -75,6 +82,7 @@ public class ReadBookActivity extends AppCompatActivity {
                 .swipeHorizontal(false)
                 .enableDoubletap(true)
                 .defaultPage(0)
+                .onLoad(nbPages -> binding.loadingBook.setVisibility(View.GONE))
                 .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
                 .password(null)
                 .scrollHandle(null)
