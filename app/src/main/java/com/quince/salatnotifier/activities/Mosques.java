@@ -5,8 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,31 +31,34 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.quince.salatnotifier.R;
+import com.quince.salatnotifier.adapters.MosquesListAdapter;
 import com.quince.salatnotifier.databinding.ActivityMosquesBinding;
+import com.quince.salatnotifier.model.MosqueModel;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
+import com.quince.salatnotifier.utility.GetLocation;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Mosques extends AppCompatActivity implements com.google.android.gms.location.LocationListener,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class Mosques extends AppCompatActivity {
     private static final String TAG = "Mosques";
     private Context context = Mosques.this;
+    private Activity activity = this;
 
     ActivityMosquesBinding binding;
+    ProgressDialog progressDialog;
 
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
-    private LocationManager locationManager;
-    private Location mLocation;
-    private long UPDATE_INTERVAL = 1000000;
-    private long FASTEST_INTERVAL = 5000000;
-
+    GetLocation locationTracker;
     Double lat, lng;
+
+    private List<MosqueModel> mosques;
+    private MosquesListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,166 +67,71 @@ public class Mosques extends AppCompatActivity implements com.google.android.gms
         View view = binding.getRoot();
         setContentView(view);
 
-        Log.d(TAG, "onCreate: ");
+        mosques = new ArrayList<>();
 
-        checkLocation();
+        locationTracker = new GetLocation(context, activity);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    private boolean checkLocation() {
-
-        Log.d(TAG, "checkLocation: " + isLocationEnabled());
-
-        if (!isLocationEnabled()) {
-            showAlert();
-        }
-
-        return isLocationEnabled();
-    }
-
-    private boolean isLocationEnabled() {
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    private void showAlert() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-
-        dialog.setTitle(getResources().getString(R.string.enable_location))
-                .setMessage(getResources().getString(R.string.enable_location_msg))
-                .setPositiveButton(getResources().getString(R.string.location_positive), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.location_negative), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-        dialog.show();
-    }
-
-    private void startLocationUpdates() {
-
-        Log.d(TAG, "startLocationUpdates: ");
-
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(UPDATE_INTERVAL)
-                .setFastestInterval(FASTEST_INTERVAL);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        lat = location.getLatitude();
-        lng = location.getLongitude();
-
-        //getAllMosques();
-
-        Log.d(TAG, "onLocationChanged: " + lat + ", " + lng);
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-        Log.d(TAG, "onConnected: ");
-        
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
-        startLocationUpdates();
-        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mLocation != null) {
-            startLocationUpdates();
-        } else {
-            Toast.makeText(this, "Location not Detected, Please turn on Your Location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended: " + i);
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    private void getAllMosques() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage(getResources().getString(R.string.finding));
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ConstantsUtilities.BASE_NEARBY_API, response -> {
+    }
+
+    public void getAllMosques(Double lat, Double lng) {
+
+        this.lat = lat;
+        this.lng = lng;
+
+        Log.d(TAG, "getAllMosques: " + lat + " , " + lng);
+
+        String URL = ConstantsUtilities.BASE_NEARBY_API + "location=" + lat + ", " + lng + "&radius=" + ConstantsUtilities.RADIUS + "&type=" + ConstantsUtilities.TYPE + "&key=" + ConstantsUtilities.API_KEY;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, response -> {
             progressDialog.dismiss();
             try {
                 JSONObject jsonObject = new JSONObject(response);
+                mosques.clear();
 
                 Log.d(TAG, "getAllMosques: " + jsonObject);
 
-            } catch (JSONException e) {
+                JSONArray results = jsonObject.getJSONArray("results");
 
+                for (int i=0; i<results.length()-1; i++){
+
+                    JSONObject singleMosque = results.getJSONObject(i);
+
+                    MosqueModel mosque = new MosqueModel();
+
+                    mosque.setName(singleMosque.getString("name"));
+                    mosque.setLat(singleMosque.getJSONObject("geometry").getJSONObject("location").getDouble("lat"));
+                    mosque.setLng(singleMosque.getJSONObject("geometry").getJSONObject("location").getDouble("lng"));
+
+                    mosques.add(mosque);
+
+                    Log.d(TAG, "getAllMosques: " + mosque.getName() + ": " + mosque.getLat() + ", " + mosque.getLng());
+                }
+
+                initializeList();
+
+            } catch (JSONException e) {
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }, error -> {
+            Log.d(TAG, "getAllMosques: ");
             progressDialog.dismiss();
             Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> map = new HashMap<>();
-                map.put("location", lat + ", " + lng);
-                map.put("radius", ConstantsUtilities.RADIUS+"");
-                map.put("type", ConstantsUtilities.TYPE);
-                map.put("key", ConstantsUtilities.API_KEY);
-                return map;
-            }
-        };
+        });
 
-        Volley.newRequestQueue(this).add(stringRequest);
+        Log.d(TAG, "getAllMosques: URL: " + stringRequest.getUrl());
+       //Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    private void initializeList() {
+        Log.d(TAG, "initializeList: ");
+        adapter = new MosquesListAdapter(context, mosques, lat, lng);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        binding.mosqueLists.setLayoutManager(linearLayoutManager);
+        binding.mosqueLists.setAdapter(adapter);
     }
 }

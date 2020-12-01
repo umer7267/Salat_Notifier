@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.quince.salatnotifier.MainActivity;
 import com.quince.salatnotifier.R;
+import com.quince.salatnotifier.activities.Mosques;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -148,6 +149,9 @@ public class GetLocation implements com.google.android.gms.location.LocationList
         if (activity instanceof MainActivity) {
             MainActivity activity1 = (MainActivity) activity;
             activity1.getTodaysNamazTimings(lat, lng);
+        } else if (activity instanceof Mosques){
+            Mosques mosquesActivity = (Mosques) activity;
+            mosquesActivity.getAllMosques(lat, lng);
         }
     }
 

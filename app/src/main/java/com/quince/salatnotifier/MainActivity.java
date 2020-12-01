@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Constants.DRAWABLE_DIAL, R.drawable.dial);	// Your dial drawable resource
         intent.putExtra(Constants.DRAWABLE_QIBLA, R.drawable.qibla); 	// Your qibla indicator drawable resource
         intent.putExtra(Constants.FOOTER_IMAGE_VISIBLE, View.VISIBLE);	// Footer World Image visibility
-        intent.putExtra(Constants.LOCATION_TEXT_VISIBLE, View.VISIBLE); // Location Text visibility
+        intent.putExtra(Constants.LOCATION_TEXT_VISIBLE, View.INVISIBLE); // Location Text visibility
         startActivity(intent);
     }
 

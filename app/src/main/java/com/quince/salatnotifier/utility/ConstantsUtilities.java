@@ -6,9 +6,9 @@ public class ConstantsUtilities {
     public static final String NOTI_CHANNEL_NAME = "Salat Notifications";
     public static final String NOTI_CHANNEL_DESC = "This channel is used to deliver notifications of the Salat Time, so User don't forget to pray Salat in their Near by Mosque";
 
-    public static final String BASE_NEARBY_API = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+    public static final String BASE_NEARBY_API = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     public static final String API_KEY = "AIzaSyC8QGoOyFmhCS2dfD65wXZAl9XlkgWmRAM";
-    public static final int RADIUS = 1500; //1500 Meter
+    public static final int RADIUS = 1500; //1.5 KM
     public static final String TYPE = "mosque";
 
     public static final String NAMAZ_TIMING = "https://api.aladhan.com/v1/timingsByAddress";
