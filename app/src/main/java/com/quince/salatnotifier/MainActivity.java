@@ -7,33 +7,24 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.hassanjamil.hqibla.CompassActivity;
 import com.hassanjamil.hqibla.Constants;
-import com.hassanjamil.hqibla.GPSTracker;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -47,7 +38,8 @@ import com.quince.salatnotifier.activities.NamazTimingActivity;
 import com.quince.salatnotifier.activities.ProblemsListActivity;
 import com.quince.salatnotifier.activities.SurahListActivity;
 import com.quince.salatnotifier.databinding.ActivityMainBinding;
-import com.quince.salatnotifier.notifications.NotificationSchedular;
+import com.quince.salatnotifier.notifications.AlarmScheduler;
+import com.quince.salatnotifier.notifications.NotificationService;
 import com.quince.salatnotifier.utility.ConstantsUtilities;
 import com.quince.salatnotifier.utility.GetLocation;
 
@@ -60,12 +52,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
-import static android.view.View.INVISIBLE;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -267,8 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (jsonObject.getInt("code") == 200){
                     UpdateUI(jsonObject.getJSONObject("data"));
-                } else {
-                    hideUI();
                 }
 
             } catch (JSONException e) {
@@ -317,11 +303,11 @@ public class MainActivity extends AppCompatActivity {
             //Namaz Timings -----End------
 
             //Set Notifications
-            //setJobSchedular(1, getNamazTimeinMillis(Fajr));
-            //setJobSchedular(2, getNamazTimeinMillis(Dhuhr));
-            setJobSchedular(3, getNamazTimeinMillis(Asr));
-            //setJobSchedular(4, getNamazTimeinMillis(Maghrib));
-            //setJobSchedular(5, getNamazTimeinMillis(Isha));
+            setAlarmManager(1, "Fajr", getNamazTimeinMillis(Fajr));
+            setAlarmManager(2, "Dhuhr", getNamazTimeinMillis(Dhuhr));
+            setAlarmManager(3, "Asr", getNamazTimeinMillis(Asr));
+            setAlarmManager(4, "Maghrib", getNamazTimeinMillis(Maghrib));
+            setAlarmManager(5, "Isha", getNamazTimeinMillis(Isha));
 
         } catch (JSONException e){
             Log.d(TAG, "UpdateUI: " + e.getMessage());
@@ -329,22 +315,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setJobSchedular(int id, Long namazTimeinMillis) {
+    private void setAlarmManager(int id, String name, Long namazTimeinMillis) {
 
-        Log.d(TAG, "setJobSchedular: namaz time: " + namazTimeinMillis);
+        Log.d(TAG, "setAlarmManager: AlarmSet");
+        
+        long repeatAfterDay = 86400000L;
 
-        Long current = System.currentTimeMillis();
-
-        Log.d(TAG, "setJobSchedular: current time: " + current);
-
-        Long remaining = namazTimeinMillis - current;
-
-        Intent intent = new Intent(context, NotificationSchedular.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, current+1000, pendingIntent);
+        new AlarmScheduler().setRepeatAlarm(getApplicationContext(), namazTimeinMillis, id, name, repeatAfterDay);
     }
 
     private String getCurrentNamaz() {
@@ -402,9 +379,6 @@ public class MainActivity extends AppCompatActivity {
         Date date = new Date(calendar.getTimeInMillis());
 
         return timeIn12Hour.format(date);
-    }
-
-    private void hideUI() {
     }
 
     private void startQiblaDirectionActivity() {

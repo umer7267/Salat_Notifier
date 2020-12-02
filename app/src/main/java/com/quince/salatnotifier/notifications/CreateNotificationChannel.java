@@ -13,7 +13,6 @@ public class CreateNotificationChannel extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         createChannel();
     }
 
