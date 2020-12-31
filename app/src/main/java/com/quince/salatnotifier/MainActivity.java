@@ -317,11 +317,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAlarmManager(int id, String name, Long namazTimeinMillis) {
 
-        Log.d(TAG, "setAlarmManager: AlarmSet");
-        
-        long repeatAfterDay = 86400000L;
+        Date currentTime = new Date(System.currentTimeMillis());
+        Date namazTime = new Date(namazTimeinMillis);
 
-        new AlarmScheduler().setRepeatAlarm(getApplicationContext(), namazTimeinMillis, id, name, repeatAfterDay);
+        if (!namazTime.before(currentTime)){
+
+            Log.d(TAG, "setAlarmManager: " + name);
+            long repeatAfterDay = 86400000L;
+            new AlarmScheduler().setRepeatAlarm(getApplicationContext(), namazTimeinMillis, id, name, repeatAfterDay);
+
+        }
     }
 
     private String getCurrentNamaz() {

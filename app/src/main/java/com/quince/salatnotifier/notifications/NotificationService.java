@@ -60,7 +60,7 @@ public class NotificationService extends IntentService {
                 .getPendingIntent(id, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder note = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(name + " Name Time")
+                .setContentTitle(name + " Namaz Time")
                 .setContentText(description)
                 .setSmallIcon(R.drawable.ic_mosque)
                 .setWhen(System.currentTimeMillis())

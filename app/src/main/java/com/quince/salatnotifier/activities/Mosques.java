@@ -124,7 +124,7 @@ public class Mosques extends AppCompatActivity {
         });
 
         Log.d(TAG, "getAllMosques: URL: " + stringRequest.getUrl());
-       //Volley.newRequestQueue(this).add(stringRequest);
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 
     private void initializeList() {

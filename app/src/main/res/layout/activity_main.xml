@@ -262,7 +262,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
@@ -271,17 +271,11 @@
                 app:cardUseCompatPadding="true">
 
                 <ImageView
-                    android:id="@+id/dua_image"
-                    android:layout_width="match_parent"
+                    android:id="@+id/duaImage"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/splash_bg"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#50000000"/>
+                    android:src="@drawable/bg_detail"
+                    android:scaleType="centerCrop"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -479,8 +473,7 @@
                     android:id="@+id/ispiration_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:src="@drawable/bg_detail"
-                    android:scaleType="centerCrop"/>
+                    tools:src="@drawable/bg_detail"/>
 
             </androidx.cardview.widget.CardView>
 
